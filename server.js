@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT","OPTIONS", "HEAD"],
+    methods: ["GET", "POST", "DELETE", "PUT"],
     origin: [
       "http://localhost:3000",
       `${process.env.UNSEC_API_BASE_URL}`,
