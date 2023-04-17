@@ -22,7 +22,7 @@ app.use(
     methods: ["GET", "POST", "DELETE", "PUT"],
     origin: [
       "http://localhost:3000",
-      `${process.env.FRONTEND_API_BASE_URL}`
+      `${process.env.FRONTEND_API_BASE_URL}`,
       `${process.env.UNSEC_API_BASE_URL}`,
       `${process.env.SEC_API_BASE_URL}`,
     ],
