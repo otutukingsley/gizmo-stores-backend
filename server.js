@@ -22,6 +22,7 @@ app.use(
     methods: ["GET", "POST", "DELETE", "PUT"],
     origin: [
       "http://localhost:3000",
+      `${process.env.FRONTEND_API_BASE_URL}`
       `${process.env.UNSEC_API_BASE_URL}`,
       `${process.env.SEC_API_BASE_URL}`,
     ],
@@ -32,8 +33,8 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/products", productRoute);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/products", productRoute);
 app.use("/api/users", userRoute);
 app.use("/api/orders", orderRoute);
 app.get("/api/config/paypal", (req, res) =>

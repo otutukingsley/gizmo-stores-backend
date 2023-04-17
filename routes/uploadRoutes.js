@@ -1,6 +1,7 @@
 import express from "express";
 import Product from "../models/productsModel.js";
 import cloudinary from "../utils/cloudinary.js";
+
 const router = express.Router();
 
 router.post("/:id", async (req, res) => {
