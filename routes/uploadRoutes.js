@@ -1,43 +1,20 @@
 import express from "express";
-import path from "path";
-import multer from "multer";
+import Product from "../models/productsModel.js";
+import cloudinary from "../utils/cloudinary.js"
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename(req, file, cb) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    );
-  },
-});
+router.post("/:id", async (req, res) => {
+  const { imgUrl } = req.body;
+  const product = await Product.findByIdAndUpdate(req.params.id);
 
-const checkFileType = (file, cb) => {
-  const fileTypes = /jpg|jpeg|png/;
-  const extensionName = fileTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
-  const mimetype = fileTypes.test(file.mimetype);
-
-  if (extensionName && mimetype) {
-    return cb(null, true);
+  if (product && imgUrl) {
+    const imgUrl = await cloudinary.uploader.upload(`${imgSrc}`, { public_id: "gizmo_preset" })
+    res.json(imgUrl);
   } else {
-    cb("Images only!");
+    res.status(404);
+    throw new Error("Invalid image format");
   }
-};
 
-const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
-});
-
-router.post("/", upload.single("image"), (req, res) => {
-  res.send(`/${req.file.path}`);
 });
 
 export default router;
