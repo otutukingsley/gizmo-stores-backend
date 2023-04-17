@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import path, { dirname } from "path";
@@ -15,8 +16,20 @@ const app = express();
 
 app.use(express.json());
 
-if(process.env.NODE_ENV === 'development'){
-  app.use(morgan('dev'))
+app.use(
+  cors({
+    credentials: true,
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT","OPTIONS", "HEAD"],
+    origin: [
+      "http://localhost:3000",
+      `${process.env.UNSEC_API_BASE_URL}`,
+      `${process.env.SEC_API_BASE_URL}`,
+    ],
+  })
+);
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 app.use("/api/products", productRoute);
@@ -32,7 +45,6 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(notFound);
 app.use(errorHandler);
-
 
 const PORT = process.env.PORT || 5001;
 
