@@ -6,10 +6,11 @@ const router = express.Router();
 router.post("/:id", async (req, res) => {
   const { imgUrl } = req.body;
   const product = await Product.findByIdAndUpdate(req.params.id);
+  console.log(req.body)
 
   if (product && imgUrl) {
-    const imgUrl = await cloudinary.uploader.upload(`${imgSrc}`, { public_id: "gizmo_preset" })
-    res.json(imgUrl);
+    const imgSrc = await cloudinary.uploader.upload(`${imgUrl}`, { public_id: "gizmo_preset" })
+    res.json(imgSrc);
   } else {
     res.status(404);
     throw new Error("Invalid image format");
